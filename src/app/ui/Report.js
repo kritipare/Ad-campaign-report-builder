@@ -6,19 +6,15 @@ import instance from "../lib/axios";
 import Card from "./Card";
 import LineChart from "./LineChart";
 
-function ReportCanvas() {
+function ReportCanvas({ selectedMetricsList, addSelectedMetric }) {
     const [data, setData] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
-    const [selectedMetricsList, setSelectedMetricsList] = useState([]);
 
     const [{ isOver }, drop] = useDrop(() => ({
         accept: ItemTypes.METRIC,
         drop: (item) => {
-            setSelectedMetricsList((selectedMetricsList) => [
-                ...selectedMetricsList,
-                item,
-            ]);
+            addSelectedMetric(item);
         },
         collect: (monitor) => ({
             isOver: monitor.isOver(),

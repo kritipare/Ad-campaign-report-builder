@@ -1,5 +1,6 @@
 import { useDrag } from "react-dnd";
 import { ItemTypes } from "../lib/types";
+import { useEffect } from "react";
 
 function Metric({
     metric,
