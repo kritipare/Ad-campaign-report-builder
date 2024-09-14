@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Line } from "react-chartjs-2";
 
 import {
@@ -20,23 +20,18 @@ ChartJS.register(
     Tooltip,
 );
 
-const LineChart = ({ title, scale = 1000 }) => {
+const LineChart = ({ metricId, campaignData, title, scale = 1000 }) => {
     // Sample data for the chart
     const data = {
-        labels: [
-            "Campaign1",
-            "Campaign2",
-            "Campaign3",
-            "Campaign4",
-            "Campaign5",
-            "Campaign6",
-        ],
+        labels: campaignData?.map((campaign) => campaign.name),
         datasets: [
             {
-                label: "Impressions",
-                data: [6500, 5900, 8000, 8100, 5600, 5500, 4000],
+                label: title,
+                data: campaignData?.map(
+                    (campaign) => campaign.metrics[metricId],
+                ),
                 fill: false,
-                borderColor: "rgb(75, 192, 192)",
+                borderColor: "#0358AF",
                 tension: 0.1,
             },
         ],
@@ -52,8 +47,10 @@ const LineChart = ({ title, scale = 1000 }) => {
     };
 
     return (
-        <div>
-            <h3>{title}</h3>
+        <div className='p-2 m-2'>
+            <h3 className='text-center font-bold text-1xl text-chambrayblue'>
+                {title}
+            </h3>
             <Line data={data} options={options} />
         </div>
     );

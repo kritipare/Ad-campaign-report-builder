@@ -18,7 +18,7 @@ function Metric({
         <span
             style={{ textTransform: "capitalize" }}
             ref={drag}
-            className={`inline-block ${textColor} w-full hover:bg-chambrayblue border-2 border-chambrayblue hover:text-white cursor-pointer rounded-full px-4 py-2 text-sm font-semibold`}>
+            className={`text-center inline-block ${textColor} w-full hover:bg-chambrayblue border-2 border-chambrayblue hover:text-white cursor-pointer rounded-full px-4 py-2 text-sm font-semibold`}>
             {metric?.name}
         </span>
     );
