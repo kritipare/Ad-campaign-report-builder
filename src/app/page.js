@@ -2,7 +2,6 @@
 import { useEffect, useState } from "react";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
-import instance from "./lib/axios";
 
 import Sidebar from "./ui/Sidebar";
 import Report from "./ui/Report";

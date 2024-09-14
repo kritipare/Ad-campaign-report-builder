@@ -21,7 +21,6 @@ ChartJS.register(
 );
 
 const LineChart = ({ metricId, campaignData, title, scale = 1000 }) => {
-    // Sample data for the chart
     const data = {
         labels: campaignData?.map((campaign) => campaign.name),
         datasets: [
