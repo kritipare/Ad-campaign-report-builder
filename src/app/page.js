@@ -1,50 +1,27 @@
-"use client";
-import { useEffect, useState } from "react";
-import { DndProvider } from "react-dnd";
-import { HTML5Backend } from "react-dnd-html5-backend";
-
 import instance from "./lib/axios";
-import Sidebar from "./ui/Sidebar";
-import Report from "./ui/Report";
+import LandingPage from "./ui/LandingPage";
 
-export default function Home() {
-    const [data, setData] = useState(null);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(null);
-    const [selectedMetricsList, setSelectedMetricsList] = useState([]);
+export default async function Home() {
+    let error, metricData, metricListData;
+    try {
+        // sidebar data
+        const responseMetricList = await instance.get(
+            "291bf921-535d-45a2-8eee-e8c3b5d86e49",
+        );
+        metricListData = responseMetricList.data;
 
-    const addSelectedMetric = (metric) => {
-        setSelectedMetricsList((selectedMetricsList) => [
-            ...new Set([...selectedMetricsList, metric]),
-        ]);
-    };
+        // report data
+        const responseMetricData = await instance.get(
+            "d7d1dd1f-67e5-4557-98cd-2a134d3a3170",
+        );
+        metricData = responseMetricData.data;
+    } catch (error) {
+        error = error;
+    }
 
-    useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const response = await instance.get(
-                    "291bf921-535d-45a2-8eee-e8c3b5d86e49",
-                );
-                setData(response.data);
-            } catch (error) {
-                setError(error);
-            } finally {
-                setLoading(false);
-            }
-        };
+    if (error) {
+        return <div>Error: {error}</div>;
+    }
 
-        fetchData();
-    }, []);
-
-    return (
-        <DndProvider backend={HTML5Backend}>
-            <div className='flex'>
-                <Sidebar data={data} />
-                <Report
-                    selectedMetricsList={selectedMetricsList}
-                    addSelectedMetric={addSelectedMetric}
-                />
-            </div>
-        </DndProvider>
-    );
+    return <LandingPage sidebarData={metricListData} reportData={metricData} />;
 }

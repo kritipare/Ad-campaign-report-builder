@@ -1,18 +1,14 @@
-import React, { useEffect, useState } from "react";
+"use client";
+import React from "react";
 import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
 import { useDrop } from "react-dnd";
 import { ItemTypes } from "../lib/types";
-import instance from "../lib/axios";
 
 import Card from "./Card";
 import LineChart from "./LineChart";
 import PieChart from "./PieChart";
 
-function ReportCanvas({ selectedMetricsList, addSelectedMetric }) {
-    const [data, setData] = useState(null);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(null);
-
+function ReportCanvas({ selectedMetricsList, addSelectedMetric, data }) {
     const [activeTab, setActiveTab] = React.useState(0);
 
     const [{ isOver }, drop] = useDrop(() => ({
@@ -24,23 +20,6 @@ function ReportCanvas({ selectedMetricsList, addSelectedMetric }) {
             isOver: monitor.isOver(),
         }),
     }));
-
-    useEffect(() => {
-        const fetchCampaignData = async () => {
-            try {
-                const response = await instance.get(
-                    "d7d1dd1f-67e5-4557-98cd-2a134d3a3170",
-                );
-                setData(response.data);
-            } catch (error) {
-                setError(error);
-            } finally {
-                setLoading(false);
-            }
-        };
-
-        fetchCampaignData();
-    }, []);
 
     return (
         <div className='flex flex-col w-full'>
@@ -58,7 +37,7 @@ function ReportCanvas({ selectedMetricsList, addSelectedMetric }) {
                             />
                         ))}
                     </div>
-                    <div className='charts'>
+                    <div className='charts flex justify-center'>
                         <Tabs>
                             <TabList className='flex border-b border-gray-200 mb-4'>
                                 <Tab
