@@ -19,7 +19,7 @@ ChartJS.register(
     Tooltip,
 );
 
-const LineChart = ({ metricId, campaignData, title, scale = 1000 }) => {
+const LineChart = ({ metricId, campaignData, title }) => {
     const data = {
         labels: campaignData?.map((campaign) => campaign.name),
         datasets: [

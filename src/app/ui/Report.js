@@ -1,15 +1,19 @@
 import React, { useEffect, useState } from "react";
+import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
 import { useDrop } from "react-dnd";
 import { ItemTypes } from "../lib/types";
 import instance from "../lib/axios";
 
 import Card from "./Card";
 import LineChart from "./LineChart";
+import PieChart from "./PieChart";
 
 function ReportCanvas({ selectedMetricsList, addSelectedMetric }) {
     const [data, setData] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+
+    const [activeTab, setActiveTab] = React.useState(0);
 
     const [{ isOver }, drop] = useDrop(() => ({
         accept: ItemTypes.METRIC,
@@ -25,7 +29,7 @@ function ReportCanvas({ selectedMetricsList, addSelectedMetric }) {
         const fetchCampaignData = async () => {
             try {
                 const response = await instance.get(
-                    "d1cf0a15-4b18-43c3-afa2-095b5e55c31d",
+                    "d7d1dd1f-67e5-4557-98cd-2a134d3a3170",
                 );
                 setData(response.data);
             } catch (error) {
@@ -54,15 +58,49 @@ function ReportCanvas({ selectedMetricsList, addSelectedMetric }) {
                             />
                         ))}
                     </div>
-                    <div className='charts grid grid-cols-1 sm:grid-cols-1 lg:grid-cols-2 gap-1 p-2'>
-                        {selectedMetricsList?.map((metric) => (
-                            <LineChart
-                                key={metric.id}
-                                metricId={metric.id}
-                                campaignData={data}
-                                title={metric.name}
-                            />
-                        ))}
+                    <div className='charts'>
+                        <Tabs>
+                            <TabList className='flex border-b border-gray-200 mb-4'>
+                                <Tab
+                                    className={`py-2 px-4 cursor-pointer hover:text-gray-800 focus:outline-none ${
+                                        activeTab === 0
+                                            ? "border-b-chambrayblue border-b-2"
+                                            : ""
+                                    }`}
+                                    onClick={() => setActiveTab(0)}>
+                                    Line Chart
+                                </Tab>
+                                <Tab
+                                    className={`py-2 px-4 cursor-pointer hover:text-gray-800 focus:outline-none ${
+                                        activeTab === 1
+                                            ? "border-b-chambrayblue border-b-2"
+                                            : ""
+                                    }`}
+                                    onClick={() => setActiveTab(1)}>
+                                    Pie Chart
+                                </Tab>
+                            </TabList>
+                            <TabPanel className='grid grid-cols-1 sm:grid-cols-1 lg:grid-cols-2 gap-1 p-2'>
+                                {selectedMetricsList?.map((metric) => (
+                                    <LineChart
+                                        key={metric.id}
+                                        metricId={metric.id}
+                                        campaignData={data}
+                                        title={metric.name}
+                                    />
+                                ))}
+                            </TabPanel>
+                            <TabPanel className='grid grid-cols-1 sm:grid-cols-1 lg:grid-cols-2 gap-1 p-2'>
+                                {selectedMetricsList?.map((metric) => (
+                                    <PieChart
+                                        key={"pie" + metric.id}
+                                        metricId={metric.id}
+                                        campaignData={data}
+                                        title={metric.name}
+                                    />
+                                ))}
+                            </TabPanel>
+                        </Tabs>
                     </div>
                 </div>
             </div>
