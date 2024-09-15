@@ -23,7 +23,10 @@ export default function PieChart({ metricId, campaignData, title }) {
         ],
     };
     return (
-        <div>
+        <div className='p-2 m-2'>
+            <h3 className='text-center font-bold text-1xl text-chambrayblue'>
+                {title}
+            </h3>
             <Pie
                 data={data}
                 options={{
